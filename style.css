@@ -1,0 +1,431 @@
+/* 🎨 style.css */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100dvh;     /* ✅ Altura real del viewport visual, compatible con móviles */
+  max-height: 100dvh; /* 🔒 evita que se expanda más */
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+  background: #1a0f00
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==================== PANTALLA DE CARGA ==================== */
+.loading-screen {
+  position: absolute;
+  width: 100%;
+  height: 100dvh;
+  background: url("assets/fondo.png") no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.progress-container {
+  width: 90%;
+  max-width: 400px;
+  height: 19px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: transparent;
+  border-radius: 30px;
+}
+
+.progress-fill {
+  height: 100%;
+  background-image: linear-gradient(90deg, #FFA500 0%, #FF4500 100%); /* 🟠 Naranja → naranja oscuro */
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%);
+  transition: width 0.1s linear;
+}
+
+.progress-bubble {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.percentage {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000; /* texto negro */
+  text-shadow:
+    0 0 2px #FFD700,
+    0 0 4px #FFD700,
+    0 0 6px #FFD700;
+}
+
+
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6); /* ⬅️ inicia más chico y centrado */
+  margin-top: 0;
+  z-index: 10;
+
+  /* ✨ Animación de entrada */
+  animation: zoomInLogo 0.6s ease-out forwards;
+}
+
+.atlantis {
+  height: auto;
+  width: 500px; /* ✅ corregido */
+  max-width: 90vw;
+}
+
+/* ==================== PANTALLA DE JUEGO ==================== */
+.game-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("assets/bg-mesa.png") no-repeat center center;
+  background-size: cover;
+}
+
+.ruleta-wrapper {
+  position: relative;
+  width: 90vw;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+
+#ruleta {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: rotate(0deg);
+  transition: transform 5s ease-out;
+
+  /* 💎 Estética mejorada */
+  border-radius: 50%;
+  box-shadow:
+    0 0 15px rgba(255, 140, 0, 0.6),
+    0 0 25px rgba(255, 200, 0, 0.4),
+    0 0 45px rgba(255, 215, 0, 0.3); /* dorado tenue */
+  filter: drop-shadow(0 0 6px #ffb300); /* naranja dorado */
+}
+
+.puntero {
+  position: absolute;
+  top: -0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  max-width: 100px;
+  pointer-events: none;
+  z-index: 10;
+
+  /* Estilo visual adicional */
+  filter: drop-shadow(0 0 8px #ff6a00) drop-shadow(0 0 16px #ffd700);
+  transition: filter 0.3s ease;;
+}
+
+/* Opción adicional si querés que palpite (sólo visual) */
+@keyframes punteroPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px #ff6a00);
+  }
+  50% {
+    filter: drop-shadow(0 0 14px #ff6a00) drop-shadow(0 0 22px #ffd700);
+  }
+}
+
+.puntero.animado {
+  animation: punteroPulse 2s infinite;
+}
+
+
+#girar-btn.boton-girar {
+  width: 120px;           /* Ajustá según el tamaño deseado */
+  height: auto;
+  margin-top: 20px;
+  cursor: pointer;
+
+  filter: drop-shadow(0 0 6px #ff6a00) drop-shadow(0 0 12px #ffd700);
+  animation: girarPulseFenix 2s infinite ease-in-out;
+  transition: transform 0.2s ease;
+}
+
+#girar-btn.boton-girar:hover {
+  transform: scale(1.05);
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+@media screen and (max-width: 400px) {
+  .ruleta-wrapper {
+    max-width: 300px;
+  }
+
+  .puntero {
+    top: -0px;
+    width: 30%;
+  }
+
+  .tridente {
+    height: 80px;
+  }
+
+  .atlantis {
+    height: 50px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .popup {
+    padding: 24px 28px;
+    max-width: 280px;
+  }
+}
+
+/* ==================== POPUP DE PREMIO ==================== */
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-container.hidden {
+  display: none;
+}
+
+.popup {
+  position: relative;
+  background: radial-gradient(circle at center, #1a0f00 0%, #000 100%);
+  border: 4px solid #ffa500; /* 🟠 dorado fuego */
+  border-radius: 20px;
+  padding: 30px 40px;
+  width: 90%;
+  max-width: 240px;
+  box-shadow: 0 0 30px #ff6600; /* 🔥 sombra naranja */
+  color: #ffcc66;
+  text-align: center;
+  animation: popupEntrada 0.5s ease-out, popupPulse 1.5s ease-in-out infinite;
+  font-family: "Montserrat", sans-serif;
+}
+
+.popup h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #ffd700;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.popup h1 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #ffd700;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.aceptar-btn {
+  padding: 10px 26px;
+  font-size: 16px;
+  font-weight: bold;
+  background: linear-gradient(to bottom, #ff9900, #cc5500); /* Fénix naranja fuego */
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  color: #fff8dc;
+  box-shadow: 0 0 10px #ff7700;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.aceptar-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ff9933;
+}
+
+.cerrar-btn {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: #ffd700;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #330000;
+  cursor: pointer;
+  box-shadow: 0 0 8px #ffa500;
+}
+
+/* 🎞️ Animación de entrada */
+@keyframes popupEntrada {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+    box-shadow: 0 0 0 transparent;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 30px #ff6600;
+  }
+}
+
+/* ✨ Pulso continuo */
+@keyframes popupPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px #ff6600;
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 40px #ff6600;
+  }
+}
+
+.popup-logo {
+  position: absolute;
+  top: -70px; /* ahora sí lo baja sobre el popup */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: auto;
+  z-index: 10;
+}
+
+@keyframes logoFade {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* ==================== LOGO SUPERIOR ATLANTIS ==================== */
+.logo-atlantis {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  /*animation: logoPulse 3s ease-in-out infinite;*/
+}
+
+.logo-atlantis img {
+  width: 200px;
+  max-width: 80vw;
+  /* Sin brillo ni animaciones */
+  filter: none;
+}
+
+
+body, html {
+  height: 100vh;
+  max-height: 100dvh; /* compatible con dispositivos móviles modernos */
+  overflow: hidden;
+}
+
+
+
+.barra-superpuesta {
+  position: absolute;
+  bottom: 70px; /* ✅ fijo al fondo, funciona en todos los celulares */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 80%;
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+@keyframes girarPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px #ff6a00) drop-shadow(0 0 12px #ffd700);
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #ff6a00) drop-shadow(0 0 22px #ffcc00);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes zoomInLogo {
+  0% {
+    transform: translateX(-50%) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+}
+
