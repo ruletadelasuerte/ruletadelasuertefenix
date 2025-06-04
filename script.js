@@ -94,39 +94,39 @@ function iniciarGiro() {
   const ruleta = document.getElementById("ruleta");
 
   fadeOut(musica);
-
+  
   sonidoRuleta.currentTime = 0;
   sonidoRuleta.volume = 0.7;
-
+  
   sonidoRuleta.play().then(() => {
     const duracion = sonidoRuleta.duration;
-
+  
     // Dividimos el tiempo total en 70% rápido y 30% lento
     const porcentajeRapido = 0.7;
     const tiempoRapido = duracion * porcentajeRapido;
     const tiempoLento = duracion * (1 - porcentajeRapido);
-
+  
     // Cálculo de grados según duración
     const vueltasRapidas = 6 * tiempoRapido; // vueltas por segundo
     const gradosRapidos = 360 * vueltasRapidas;
     const gradosLentos = 720; // siempre al menos 2 vueltas
     const gradosFinales = gradosRapidos + gradosLentos + premio.angulo;
-
+  
     // Reset visual
     ruleta.style.transition = "none";
     ruleta.style.transform = "rotate(0deg)";
     void ruleta.offsetWidth;
-
+  
     // Giro rápido
     ruleta.style.transition = `transform ${tiempoRapido}s linear`;
     ruleta.style.transform = `rotate(${gradosRapidos}deg)`;
-
+  
     // Giro lento (desaceleración)
     setTimeout(() => {
       ruleta.style.transition = `transform ${tiempoLento}s cubic-bezier(0.1, 0.9, 0.3, 1)`;
       ruleta.style.transform = `rotate(${gradosFinales}deg)`;
     }, tiempoRapido * 1000);
-
+  
     // Al finalizar todo el audio (duración total)
     setTimeout(() => {
       if (sonidoGanador) {
@@ -134,10 +134,11 @@ function iniciarGiro() {
         sonidoGanador.volume = 0.9;
         sonidoGanador.play().catch(() => {});
       }
-
+  
       const premioObtenido = detectarPremioPorAngulo(gradosFinales);
+      localStorage.setItem("premioObtenido", premioObtenido);
       mostrarPopup(premioObtenido);
-
+  
       if (premioObtenido === "OTRO GIRO") {
         permitirReintento = true;
       } else {
@@ -145,10 +146,10 @@ function iniciarGiro() {
         permitirReintento = false;
         yaGiro = true;
       }
-
+  
       ruletaGirando = false;
     }, duracion * 1000);
-
+  
   }).catch(err => {
     console.error("Error al reproducir el sonido de ruleta:", err);
   });
@@ -158,8 +159,24 @@ function iniciarGiro() {
 function mostrarPopup(premioObtenido) {
   const popup = document.getElementById("popup-premio");
   const texto = document.getElementById("texto-premio");
+  const fecha = document.getElementById("popup-fecha");
 
+  // 🎯 Texto del premio
   texto.textContent = premioObtenido;
+
+  // 🕒 Mostrar fecha y hora actual
+  const ahora = new Date();
+  const fechaStr = ahora.toLocaleString('es-AR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+  fecha.textContent = fechaStr;
+
+  // 📦 Mostrar el popup
   popup.classList.remove("hidden");
 
   if (!sonidoRuleta.paused) {
@@ -172,12 +189,13 @@ function mostrarPopup(premioObtenido) {
   void popupBox.offsetWidth;
   popupBox.style.animation = "popupEntrada 0.5s ease-out, popupPulse 1.5s ease-in-out infinite";
 
+  // 🎉 Confetti
   confetti({
     particleCount: 150,
     spread: 90,
     startVelocity: 45,
     origin: { y: 0.6 },
-    colors: ['#FFFFFF', '#FFE5B4', '#FFA500', '#FF8C00'], // Blanco, crema y naranjas cálidos
+    colors: ['#FFD700', '#000000', '#FFFFFF', '#C0C0C0'], // dorado, negro, blanco, plata
     zIndex: 1000
   });
 }
@@ -191,8 +209,21 @@ function cerrarPopup() {
 // ------------------------ MOSTRAR POPUP AVISO 🌊 ------------------------
 function mostrarPopupAviso() {
   const popup = document.getElementById("popup-aviso");
-  popup.classList.remove("hidden");
+  const mensaje = document.getElementById("mensaje-aviso");
 
+  // Obtener premio y fecha del localStorage o definir por defecto
+  const premio = localStorage.getItem("premioObtenido") || "un premio";
+  const fechaHoy = new Date().toLocaleDateString('es-AR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+
+  // Insertar el mensaje personalizado
+  mensaje.innerHTML = `¡Hola!<br>Hoy ${fechaHoy} ya ganaste <strong>${premio}</strong>.<br>Volvé mañana y probamos suerte de nuevo 🎲`;
+
+  // Mostrar el popup con animación
+  popup.classList.remove("hidden");
   const popupBox = popup.querySelector(".popup");
   popupBox.style.animation = "none";
   void popupBox.offsetWidth;
@@ -204,12 +235,3 @@ function cerrarPopupAviso() {
   document.getElementById("popup-aviso").classList.add("hidden");
 }
 
-// 🔁 Presioná "r" para resetear el giro (modo testing)
-document.addEventListener("keydown", (e) => {
-  if (e.key.toLowerCase() === "r") {
-    localStorage.removeItem("ultimoGiro");
-    yaGiro = false;
-    permitirReintento = false;
-    console.log("🔁 Giro reseteado para testing");
-  }
-});
