@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ruleta Casino Fénix</title>
+  <title>Ruleta Club Eros</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <meta name="theme-color" content="#1a0f00" />
@@ -53,6 +53,8 @@
   <!-- POPUP DE PREMIO -->
   <div id="popup-premio" class="popup-container hidden">
     <div class="popup">
+      <!-- ⏱️ Fecha y hora -->
+      <div class="popup-fecha" id="popup-fecha"></div>
       <button class="cerrar-btn" onclick="cerrarPopup()">X</button>
       <h2>¡GANASTE!</h2>
       <h1 id="texto-premio">BONO 200%</h1>
@@ -60,13 +62,11 @@
     </div>
   </div>
 
-  <!-- POPUP DE AVISO 🌊 -->
-  <div class="popup-container hidden" id="popup-aviso">
+  <!-- POPUP DE AVISO 🎲 -->
+  <div id="popup-aviso" class="popup-container hidden">
     <div class="popup">
-      <img src="assets/logo-fenix.png" alt="Logo Fénix" class="popup-logo" />
       <button class="cerrar-btn" onclick="cerrarPopupAviso()">X</button>
-      <h2>¡Hola!</h2>
-      <h1 style="font-size: 20px;">Ya usaste tu oportunidad.<br>Volvé mañana 🐦‍🔥</h1>
+      <div id="mensaje-aviso" class="popup-aviso-texto"></div>
       <button class="aceptar-btn" onclick="cerrarPopupAviso()">Aceptar</button>
     </div>
   </div>
