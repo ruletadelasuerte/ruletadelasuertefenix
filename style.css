@@ -429,3 +429,22 @@ body, html {
   }
 }
 
+.popup-aviso-texto {
+  color: #FFA500; /* naranja fuego */
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-shadow: 0 0 6px #000, 0 0 12px #FF4500; /* efecto glow cálido */
+}
+
+.popup-fecha {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #FFA500;
+  text-shadow: 0 0 4px #000, 0 0 10px #FF8C00;
+}
